@@ -1,0 +1,83 @@
+#!/usr/bin/env ruby
+require 'gli'
+begin # XXX: Remove this begin/rescue before distributing your app
+require 'storm_fury'
+rescue LoadError
+  STDERR.puts "In development, you need to use `bundle exec bin/storm_fury` to run your app"
+  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
+  STDERR.puts "Feel free to remove this message from bin/storm_fury now"
+  exit 64
+end
+
+include GLI::App
+
+program_desc 'Rapidly deploy storm environments'
+
+version StormFury::VERSION
+
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abort and not call the
+  # chosen command
+  # Use skips_pre before a command to skip this block
+  # on that command only
+  true
+end
+
+desc 'Create a storm IN THE CLOUD'
+arg_name "name"
+command :create do |c|
+  c.desc "The ID of the flavor to create"
+  c.default_value StormFury.default_flavor_id
+  c.flag [:f, :flavor_id]
+
+  c.desc "The ID of the image to create"
+  c.default_value StormFury.default_image_id
+  c.flag [:i, :image_id]
+
+  c.desc "The name of the key pair to use for provisioning"
+  c.default_value StormFury.default_key_pair
+  c.flag [:k, :key_pair]
+
+  c.action do |global_options,options,args|
+    if StormFury::Action::Create.run(global_options, options, args)
+      puts "[SUCCESS] Created server."
+    else
+      puts "[FAILED] Unable to create server."
+    end
+  end
+end
+
+desc "Manipulate key pairs"
+command :key_pairs do |c|
+  c.desc "Create a key pair IN THE CLOUD"
+  c.arg_name "name"
+  c.command :create do |create|
+    create.desc 'The path to the key file'
+    create.default_value StormFury.default_key_pair_path
+    create.arg_name 'path-to-key'
+    create.flag [:p, :path]
+
+    create.action do |global_options, options, args|
+      if StormFury::Action::CreateKeyPair.run(global_options, options, args)
+        puts "[SUCCESS] Created key pair."
+      else
+        puts "[FAILED] Unable to create key pair."
+      end
+    end
+  end
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit run(ARGV)

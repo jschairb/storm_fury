@@ -1,0 +1,5 @@
+= storm_fury
+
+Generate this with
+    storm_fury rdoc
+After you have described your command line interface

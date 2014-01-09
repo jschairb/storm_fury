@@ -1,0 +1,6 @@
+= storm_fury
+
+Describe your project here
+
+:include:storm_fury.rdoc
+
