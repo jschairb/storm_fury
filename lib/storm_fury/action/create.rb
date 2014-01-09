@@ -5,9 +5,6 @@ module StormFury::Action
     attr_reader :flavor_id, :image_id, :key_pair, :name, :service
 
     def self.run(global_options, options, args)
-      puts global_options
-      puts options
-      puts args
       create = new(global_options, options, args)
       create.run
     end
@@ -20,7 +17,7 @@ module StormFury::Action
       @service   = StormFury.service
     end
 
-    def run
+    def run(wait = true)
       attributes = {
         flavor_id: flavor_id,
         image_id: image_id,
@@ -30,15 +27,30 @@ module StormFury::Action
         },
         name: name
       }
-      create_server(attributes)
+      server = create_server(attributes)
+      return true unless wait
+
+      wait_for_finish(server)
     end
 
     private
     def create_server(attributes)
-      server = service.servers.create(attributes)
-      puts server.inspect
+      service.servers.create(attributes)
     rescue Fog::Compute::RackspaceV2::ServiceError => error
       fail ServerNotCreatedError, error.message
+    end
+
+    def wait_for_finish(server)
+      bar = StormFury::Context::CLI::Progress.new
+      progress = server.progress.to_i
+
+      until server.ready?
+        sleep(2)
+        server.reload
+        progress = server.progress - progress
+        bar.increment! progress
+      end
+      true
     end
   end
 end
