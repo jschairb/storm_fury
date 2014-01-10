@@ -20,9 +20,10 @@ lib/storm_fury.rb
   s.rdoc_options << '--title' << 'storm_fury' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'storm_fury'
+  s.add_development_dependency('aruba')
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
-  s.add_development_dependency('aruba')
+  s.add_development_dependency('rspec')
   s.add_runtime_dependency('gli','2.8.1')
   s.add_runtime_dependency('fog')
   s.add_runtime_dependency('progress_bar')
