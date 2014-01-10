@@ -35,8 +35,8 @@ module StormFury::Action
 
     private
     def create_server(attributes)
-      service.servers.create(attributes)
-    rescue Fog::Compute::RackspaceV2::ServiceError => error
+      StormFury::Resource::Server.create(attributes)
+     rescue StormFury::Resource::ResourceNotCreatedError => error
       fail ServerNotCreatedError, error.message
     end
 
