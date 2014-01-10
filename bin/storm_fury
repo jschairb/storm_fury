@@ -16,11 +16,9 @@ program_desc 'Rapidly deploy storm environments'
 version StormFury::VERSION
 
 pre do |global,command,options,args|
-  # Pre logic here
-  # Return true to proceed; false to abort and not call the
-  # chosen command
-  # Use skips_pre before a command to skip this block
-  # on that command only
+  if !File.exists?(File.expand_path("~/.fog"))
+    fail "Please create credentials for fog at ~/.fog"
+  end
   true
 end
 
@@ -75,9 +73,9 @@ post do |global,command,options,args|
 end
 
 on_error do |exception|
-  # Error logic here
-  # return false to skip default error handling
-  true
+  message = "[FAILURE] #{exception.message}"
+  puts message
+  false # required to skip default error handling
 end
 
 exit run(ARGV)
