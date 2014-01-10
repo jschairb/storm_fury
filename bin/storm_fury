@@ -16,39 +16,39 @@ program_desc 'Rapidly deploy storm environments'
 version StormFury::VERSION
 
 pre do |global,command,options,args|
+  # TODO: refactor to a Pre-Validation
   if !File.exists?(File.expand_path("~/.fog"))
     fail "Please create credentials for fog at ~/.fog"
   end
   true
 end
 
-desc 'Create a storm IN THE CLOUD'
-arg_name "name"
-command :create do |c|
-  c.desc "The ID of the flavor to create"
-  c.default_value StormFury.default_flavor_id
-  c.flag [:f, :flavor_id]
+desc 'Manage servers IN THE CLOUD, WITH FURY'
+command :servers do |servers|
+  servers.desc "Create a server IN THE CLOUD"
+  servers.arg_name "name"
+  servers.command :create do |create|
+    create.desc "The flavor id"
+    create.default_value StormFury.default_flavor_id
+    create.flag [:f, :flavor_id]
 
-  c.desc "The ID of the image to create"
-  c.default_value StormFury.default_image_id
-  c.flag [:i, :image_id]
+    create.desc "The image id"
+    create.default_value StormFury.default_image_id
+    create.flag [:i, :image_id]
 
-  c.desc "The name of the key pair to use for provisioning"
-  c.default_value StormFury.default_key_pair
-  c.flag [:k, :key_pair]
+    create.desc "The name of the keypair"
+    create.default_value StormFury.default_key_pair
+    create.flag [:k, :key_pair]
 
-  c.action do |global_options,options,args|
-    if StormFury::Action::Create.run(global_options, options, args)
-      puts "[SUCCESS] Created server."
-    else
-      puts "[FAILED] Unable to create server."
+    create.action do |global_options, options, args|
+      StormFury::CLI::Servers.create(global_options, options, args)
     end
   end
 end
 
-desc "Manipulate key pairs"
-command :key_pairs do |c|
-  c.desc "Create a key pair IN THE CLOUD"
+desc "Manage keypairs IN THE CLOUD, WITH FURY"
+command :keypairs do |c|
+  c.desc "Create a keypair IN THE CLOUD"
   c.arg_name "name"
   c.command :create do |create|
     create.desc 'The path to the key file'
@@ -57,11 +57,7 @@ command :key_pairs do |c|
     create.flag [:p, :path]
 
     create.action do |global_options, options, args|
-      if StormFury::Action::CreateKeyPair.run(global_options, options, args)
-        puts "[SUCCESS] Created key pair."
-      else
-        puts "[FAILED] Unable to create key pair."
-      end
+      StormFury::CLI.Keypairs.create(global_options, options, args)
     end
   end
 end

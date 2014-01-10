@@ -32,6 +32,7 @@ end
 # Add requires for other files you add to your project here, so
 # you just need to require this one file in your bin file
 require 'storm_fury/action'
+require 'storm_fury/cli'
 require 'storm_fury/context'
 require 'storm_fury/key'
 require 'storm_fury/resource'
