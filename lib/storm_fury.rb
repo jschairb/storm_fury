@@ -20,6 +20,10 @@ module StormFury
     File.expand_path("~/.ssh/id_rsa")
   end
 
+  def self.default_service
+    service
+  end
+
   def self.service
     @service ||= Fog::Compute.new({ provider: 'rackspace', rackspace_region: :dfw, version: :v2 })
   end
@@ -30,3 +34,4 @@ end
 require 'storm_fury/action'
 require 'storm_fury/context'
 require 'storm_fury/key'
+require 'storm_fury/resource'
