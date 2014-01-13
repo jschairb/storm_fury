@@ -12,11 +12,11 @@ module StormFury
     "f70ed7c7-b42e-4d77-83d8-40fa29825b85"
   end
 
-  def self.default_key_pair
+  def self.default_keypair
     "storm-deploy"
   end
 
-  def self.default_key_pair_path
+  def self.default_keypair_path
     File.expand_path("~/.ssh/id_rsa")
   end
 
@@ -36,3 +36,4 @@ require 'storm_fury/cli'
 require 'storm_fury/context'
 require 'storm_fury/key'
 require 'storm_fury/resource'
+require 'storm_fury/server'
