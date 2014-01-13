@@ -37,8 +37,8 @@ command :servers do |servers|
     create.flag [:i, :image_id]
 
     create.desc "The name of the keypair"
-    create.default_value StormFury.default_key_pair
-    create.flag [:k, :key_pair]
+    create.default_value StormFury.default_keypair
+    create.flag [:k, :keypair]
 
     create.action do |global_options, options, args|
       StormFury::CLI::Servers.create(global_options, options, args)
@@ -52,7 +52,7 @@ command :keypairs do |c|
   c.arg_name "name"
   c.command :create do |create|
     create.desc 'The path to the key file'
-    create.default_value StormFury.default_key_pair_path
+    create.default_value StormFury.default_keypair_path
     create.arg_name 'path-to-key'
     create.flag [:p, :path]
 
