@@ -25,4 +25,5 @@ module StormFury
 end
 
 require_relative 'cli/keypairs'
+require_relative 'cli/progress_report'
 require_relative 'cli/servers'
