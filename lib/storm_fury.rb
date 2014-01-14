@@ -2,6 +2,10 @@ require 'storm_fury/version.rb'
 require 'fog'
 
 module StormFury
+  def self.default_domain
+    "example.org"
+  end
+
   # 1GB RAM, 20 GB SSD disk
   def self.default_flavor_id
     "performance1-1"
@@ -33,7 +37,6 @@ end
 # you just need to require this one file in your bin file
 require 'storm_fury/action'
 require 'storm_fury/cli'
-require 'storm_fury/context'
 require 'storm_fury/key'
 require 'storm_fury/resource'
 require 'storm_fury/server'
