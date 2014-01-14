@@ -28,6 +28,10 @@ command :servers do |servers|
   servers.desc "Create a server IN THE CLOUD"
   servers.arg_name "name"
   servers.command :create do |create|
+    create.desc "The domain for this server"
+    create.default_value StormFury.default_domain
+    create.flag [:d, :domain]
+
     create.desc "The flavor id"
     create.default_value StormFury.default_flavor_id
     create.flag [:f, :flavor_id]
