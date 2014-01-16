@@ -44,6 +44,10 @@ command :servers do |servers|
     create.default_value StormFury.default_keypair
     create.flag [:k, :keypair]
 
+    create.desc "The path of the key representing the keypair"
+    create.default_value StormFury.default_keypair_path
+    create.flag [:p, :keypath]
+
     create.action do |global_options, options, args|
       StormFury::CLI::Servers.create(global_options, options, args)
     end
