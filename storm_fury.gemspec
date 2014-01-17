@@ -24,9 +24,9 @@ lib/storm_fury.rb
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('rspec')
+  s.add_runtime_dependency('ansi')
   s.add_runtime_dependency('gli','2.8.1')
   s.add_runtime_dependency('fog')
-  s.add_runtime_dependency('progress_bar')
   s.add_runtime_dependency('pry')
   s.add_runtime_dependency('sshkey')
 end

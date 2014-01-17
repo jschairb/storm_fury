@@ -1,4 +1,4 @@
-require 'progress_bar'
+require 'ansi/progressbar'
 
 module StormFury::CLI
   class ProgressReport
@@ -10,15 +10,15 @@ module StormFury::CLI
     end
 
     def initialize(server)
-      @bar    = ProgressBar.new(100, :bar, :percentage, :elapsed)
+      @bar    = ANSI::Progressbar.new(server.name, 100)
       @server = server
     end
 
     def increment!(value = nil)
       if value
-        bar.increment! value
+        value.times { bar.inc }
       else
-        bar.increment
+        bar.inc
       end
     end
 
@@ -29,7 +29,7 @@ module StormFury::CLI
         sleep(2)
         server.reload
         progress = server.progress - progress
-        bar.increment! progress
+        increment! progress
       end
     end
   end
