@@ -17,7 +17,7 @@ version StormFury::VERSION
 
 pre do |global,command,options,args|
   # TODO: refactor to a Pre-Validation
-  if !File.exists?(File.expand_path("~/.fog"))
+  if !File.exists?(File.expand_path("#{ENV['HOME']}/.fog"))
     fail "Please create credentials for fog at ~/.fog"
   end
   true

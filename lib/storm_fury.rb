@@ -28,6 +28,10 @@ module StormFury
     service
   end
 
+  def self.fog_config_file
+    File.expand_path("~/.fog")
+  end
+
   def self.service
     @service ||= Fog::Compute.new({ provider: 'rackspace', rackspace_region: :dfw, version: :v2 })
   end
