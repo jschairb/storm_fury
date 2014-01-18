@@ -31,6 +31,8 @@ module StormFury::CLI
         progress = server.progress - progress
         increment! progress
       end
+
+      bar.finish
     end
   end
 end
