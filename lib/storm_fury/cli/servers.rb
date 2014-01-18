@@ -23,22 +23,22 @@ module StormFury::CLI
 
       if server.persisted?
         ProgressReport.run(server)
-        io.puts "[SUCCESS] Created server."
+        io.puts Output::Message.success("Created server.")
 
         if StormFury::Resource::DNSRecord.create(domain, { ip_address: server.ipv4_address, name: host })
-          io.puts "[SUCCESS] Created DNS record."
+          io.puts Output::Message.success("Created DNS record.")
           ssh = Fog::SSH.new(server.ipv4_address, server.username, { keys: [File.expand_path(options[:keypath])] })
           if ssh.run("curl -L http://bootstrap.saltstack.org | sh -s -- -n git v0.17.4").first.status == 0
-            io.puts "[SUCCESS] Bootstrapped salt minion."
+            io.puts Output::Message.success("Bootstrapped salt minion.")
           else
-            io.puts "[FAILURE] Unable to bootstrap salt minion."
+            io.puts Output::Message.failure("Unable to bootstrap salt minion.")
           end
         else
-          io.puts "[FAILED] Unable to create DNS record."
+          io.puts Output::Message.failure("Unable to create DNS record.")
         end
 
       else
-        io.puts "[FAILED] Unable to create server."
+        io.puts Output::Message.failure("Unable to create server.")
       end
     end
   end
